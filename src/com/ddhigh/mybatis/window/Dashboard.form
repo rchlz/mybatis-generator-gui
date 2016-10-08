@@ -145,7 +145,7 @@
                   </grid>
                 </constraints>
                 <properties>
-                  <text value="Entity"/>
+                  <text value=""/>
                 </properties>
               </component>
               <component id="39622" class="javax.swing.JCheckBox" binding="checkBoxOverwrite">
