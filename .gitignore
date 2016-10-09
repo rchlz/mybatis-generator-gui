@@ -1,3 +1,6 @@
 .idea
 /out
 *.iml
+/com
+/bin
+/config.ini

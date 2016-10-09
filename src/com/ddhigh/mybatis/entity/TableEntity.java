@@ -2,6 +2,7 @@ package com.ddhigh.mybatis.entity;
 
 public class TableEntity {
     private String tableName;
+    private Boolean isSelected = false;
     private String entityName;
 
     public TableEntity(String tableName, String entityName) {
@@ -23,5 +24,13 @@ public class TableEntity {
 
     public void setEntityName(String entityName) {
         this.entityName = entityName;
+    }
+
+    public Boolean getSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(Boolean selected) {
+        isSelected = selected;
     }
 }

@@ -3,9 +3,11 @@ package com.ddhigh.mybatis.window;
 import com.ddhigh.mybatis.entity.TableEntity;
 import com.ddhigh.mybatis.util.DbUtil;
 import com.ddhigh.mybatis.util.GUIUtil;
+import com.ddhigh.mybatis.util.StringUtil;
 import com.ddhigh.mybatis.worker.GenerateWorker;
 import com.ddhigh.mybatis.worker.GetTablesWorker;
 import com.ddhigh.mybatis.worker.MemoryMonitorWorker;
+import javafx.scene.control.TableCell;
 import org.apache.log4j.Logger;
 import org.mybatis.generator.exception.InvalidConfigurationException;
 
@@ -174,6 +176,7 @@ public class Dashboard {
     private static Vector<String> tableColumnNames = new Vector<>();
 
     static {
+        tableColumnNames.add("选择");
         tableColumnNames.add("序号");
         tableColumnNames.add("表名");
         tableColumnNames.add("实体类名");
@@ -188,7 +191,8 @@ public class Dashboard {
         for (TableEntity t : tables) {
             t.setEntityName(t.getEntityName() + entitySuffix);
         }
-        tableTable.setModel(new TableModel() {
+
+        tableTable.setModel(new  AbstractTableModel() {
             @Override
             public int getRowCount() {
                 return tables.size();
@@ -206,24 +210,28 @@ public class Dashboard {
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                return String.class;
+                //return String.class;
+                return columnIndex == 0 ? Boolean.class : String.class;
             }
 
             @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return columnIndex == 2;
+                return columnIndex == 0 || columnIndex == 3;
             }
 
             @Override
             public Object getValueAt(int rowIndex, int columnIndex) {
                 TableEntity entity = tables.get(rowIndex);
                 if (columnIndex == 0) {
-                    return rowIndex + 1;
+                    return entity.getSelected();
                 }
                 if (columnIndex == 1) {
-                    return entity.getTableName();
+                    return rowIndex + 1;
                 }
                 if (columnIndex == 2) {
+                    return entity.getTableName();
+                }
+                if (columnIndex == 3) {
                     return entity.getEntityName();
                 }
                 return null;
@@ -231,11 +239,18 @@ public class Dashboard {
 
             @Override
             public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-                if (columnIndex == 2) {
+                if (columnIndex == 3) {
                     TableEntity entity = tables.get(rowIndex);
                     entity.setEntityName(aValue.toString());
                     logger.debug("[" + rowIndex + "][" + columnIndex + "] - " + aValue);
                 }
+
+                if (columnIndex == 0) {
+                    TableEntity entity = tables.get(rowIndex);
+                    entity.setSelected(aValue == null ? false : (Boolean) aValue);
+                    logger.debug("[" + rowIndex + "][" + columnIndex + "] - " + aValue);
+                }
+
             }
 
             @Override

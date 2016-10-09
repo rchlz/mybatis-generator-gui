@@ -83,14 +83,16 @@ public class GenerateWorker {
         context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
 
         for (TableEntity tableEntity : tableEntities) {
-            TableConfiguration tableConfiguration = new TableConfiguration(context);
-            tableConfiguration.setTableName(tableEntity.getTableName());
-            tableConfiguration.setDomainObjectName(tableEntity.getEntityName());
-            tableConfiguration.setDeleteByExampleStatementEnabled(false);
-            tableConfiguration.setUpdateByExampleStatementEnabled(false);
-            tableConfiguration.setCountByExampleStatementEnabled(false);
-            tableConfiguration.setSelectByExampleStatementEnabled(false);
-            context.addTableConfiguration(tableConfiguration);
+            if (tableEntity.getSelected()) {
+                TableConfiguration tableConfiguration = new TableConfiguration(context);
+                tableConfiguration.setTableName(tableEntity.getTableName());
+                tableConfiguration.setDomainObjectName(tableEntity.getEntityName());
+                tableConfiguration.setDeleteByExampleStatementEnabled(false);
+                tableConfiguration.setUpdateByExampleStatementEnabled(false);
+                tableConfiguration.setCountByExampleStatementEnabled(false);
+                tableConfiguration.setSelectByExampleStatementEnabled(false);
+                context.addTableConfiguration(tableConfiguration);
+            }
         }
         configuration.addContext(context);
         DefaultShellCallback defaultShellCallback = new DefaultShellCallback(overwrite);
@@ -99,14 +101,16 @@ public class GenerateWorker {
         List<TableConfiguration> tableConfigurations = configuration.getContexts().get(0).getTableConfigurations();
 
         for (TableEntity tableEntity : tableEntities) {
-            TableConfiguration tableConfiguration = new TableConfiguration(configuration.getContexts().get(0));
-            tableConfiguration.setTableName(tableEntity.getTableName());
-            tableConfiguration.setDomainObjectName(tableEntity.getEntityName());
-            tableConfiguration.setCountByExampleStatementEnabled(false);
-            tableConfiguration.setDeleteByExampleStatementEnabled(false);
-            tableConfiguration.setSelectByExampleStatementEnabled(false);
-            tableConfiguration.setUpdateByExampleStatementEnabled(false);
-            tableConfigurations.add(tableConfiguration);
+            if (tableEntity.getSelected()) {
+                TableConfiguration tableConfiguration = new TableConfiguration(configuration.getContexts().get(0));
+                tableConfiguration.setTableName(tableEntity.getTableName());
+                tableConfiguration.setDomainObjectName(tableEntity.getEntityName());
+                tableConfiguration.setCountByExampleStatementEnabled(false);
+                tableConfiguration.setDeleteByExampleStatementEnabled(false);
+                tableConfiguration.setSelectByExampleStatementEnabled(false);
+                tableConfiguration.setUpdateByExampleStatementEnabled(false);
+                tableConfigurations.add(tableConfiguration);
+            }
         }
         myBatisGenerator.generate(progressCallback);
     }
