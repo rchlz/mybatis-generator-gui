@@ -281,7 +281,7 @@ public class Dashboard {
         overwrite = checkBoxOverwrite.isSelected();
         entitySuffix = txtEntity.getText().trim();
         if (src.equals("请选择生成的src根目录") || modelPkg.isEmpty() || mapPkg.isEmpty() || daoPkg.isEmpty()) {
-            JOptionPane.showMessageDialog(frame, "请将信息填写完整");
+            JOptionPane.showMessageDialog(frame, "请将信息填写完整","错误",JOptionPane.ERROR_MESSAGE);
             return;
         }
         labelStatus.setText("生成中");
@@ -316,6 +316,7 @@ public class Dashboard {
                     btnGenerate.setEnabled(true);
                     btnRefreshTable.setEnabled(true);
                     logger.error(message, ex);
+                    JOptionPane.showMessageDialog(frame, message,"错误",JOptionPane.ERROR_MESSAGE);
                 }
             });
             worker.execute();
@@ -324,6 +325,7 @@ public class Dashboard {
             labelStatus.setText(e.getMessage());
             btnGenerate.setEnabled(true);
             btnRefreshTable.setEnabled(true);
+            JOptionPane.showMessageDialog(frame, e.getMessage(),"错误",JOptionPane.ERROR_MESSAGE);
         }
     }
 

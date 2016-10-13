@@ -73,7 +73,9 @@
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <text value="com.snsxiu.llgs"/>
+                </properties>
               </component>
               <component id="30889" class="javax.swing.JLabel">
                 <constraints>
@@ -89,7 +91,9 @@
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <text value="com.snsxiu.llgs"/>
+                </properties>
               </component>
               <component id="5a73c" class="javax.swing.JLabel">
                 <constraints>
@@ -105,7 +109,9 @@
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <text value="com.snsxiu.llgs"/>
+                </properties>
               </component>
               <grid id="2a36e" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                 <constraints>

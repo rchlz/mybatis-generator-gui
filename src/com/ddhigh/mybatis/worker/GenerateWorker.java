@@ -66,22 +66,45 @@ public class GenerateWorker {
         jdbcConnectionConfiguration.setDriverClass(dbUtil.getType().equals(DbUtil.Type.MySQL) ? "com.mysql.jdbc.Driver" : "oracle.jdbc.driver.OracleDriver");
         context.setJdbcConnectionConfiguration(jdbcConnectionConfiguration);
         //路径完成
+
+        //配置Plugin
+        PluginConfiguration renamePrimaryKeyConfiguration = new PluginConfiguration();
+        renamePrimaryKeyConfiguration.setConfigurationType("com.ddhigh.mybatis.plugins.RenamePrimaryKeyPlugin");
+        context.addPluginConfiguration(renamePrimaryKeyConfiguration);
+
+        PluginConfiguration queryAllGeneratorPluginConfiguration = new PluginConfiguration();
+        queryAllGeneratorPluginConfiguration.setConfigurationType("com.ddhigh.mybatis.plugins.QueryAllGeneratorPlugin");
+        context.addPluginConfiguration(queryAllGeneratorPluginConfiguration);
+
+        PluginConfiguration queryGeneratorPluginConfiguration = new PluginConfiguration();
+        queryGeneratorPluginConfiguration.setConfigurationType("com.ddhigh.mybatis.plugins.QueryGeneratorPlugin");
+        context.addPluginConfiguration(queryGeneratorPluginConfiguration);
+
+        PluginConfiguration querySelectiveGeneratorPluginConfiguration = new PluginConfiguration();
+        querySelectiveGeneratorPluginConfiguration.setConfigurationType("com.ddhigh.mybatis.plugins.QuerySelectiveGeneratorPlugin");
+        context.addPluginConfiguration(querySelectiveGeneratorPluginConfiguration);
+
+
+        //配置JavaModel
         JavaModelGeneratorConfiguration javaModelGeneratorConfiguration = new JavaModelGeneratorConfiguration();
         javaModelGeneratorConfiguration.setTargetProject(src);
         javaModelGeneratorConfiguration.setTargetPackage(modelPkg);
         context.setJavaModelGeneratorConfiguration(javaModelGeneratorConfiguration);
 
+        //配置SqlMap
         SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration = new SqlMapGeneratorConfiguration();
         sqlMapGeneratorConfiguration.setTargetPackage(mapPkg);
         sqlMapGeneratorConfiguration.setTargetProject(src);
         context.setSqlMapGeneratorConfiguration(sqlMapGeneratorConfiguration);
 
+        //配置JavaClient
         JavaClientGeneratorConfiguration javaClientGeneratorConfiguration = new JavaClientGeneratorConfiguration();
         javaClientGeneratorConfiguration.setTargetPackage(daoPkg);
         javaClientGeneratorConfiguration.setTargetProject(src);
         javaClientGeneratorConfiguration.setConfigurationType("XMLMAPPER");
         context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
 
+        //配置table
         for (TableEntity tableEntity : tableEntities) {
             if (tableEntity.getSelected()) {
                 TableConfiguration tableConfiguration = new TableConfiguration(context);
@@ -98,6 +121,7 @@ public class GenerateWorker {
         DefaultShellCallback defaultShellCallback = new DefaultShellCallback(overwrite);
         MyBatisGenerator myBatisGenerator = new MyBatisGenerator(configuration, defaultShellCallback, warnings);
         //实体
+        /*
         List<TableConfiguration> tableConfigurations = configuration.getContexts().get(0).getTableConfigurations();
 
         for (TableEntity tableEntity : tableEntities) {
@@ -107,11 +131,12 @@ public class GenerateWorker {
                 tableConfiguration.setDomainObjectName(tableEntity.getEntityName());
                 tableConfiguration.setCountByExampleStatementEnabled(false);
                 tableConfiguration.setDeleteByExampleStatementEnabled(false);
-                tableConfiguration.setSelectByExampleStatementEnabled(false);
+                tableConfiguration.setSelectByExampleStatementEnabled(true);
                 tableConfiguration.setUpdateByExampleStatementEnabled(false);
                 tableConfigurations.add(tableConfiguration);
             }
         }
+        */
         myBatisGenerator.generate(progressCallback);
     }
 
